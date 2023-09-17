@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block metadescription %}
+        {{product.description|truncatewords:150}}
+{% endblock %}
+
+{% block title %}
+    {% if category %}
+        {{product.name}} - EcomZone
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div>
+    <div class="row my_prod_row_class">
+        <div class=" mx-auto">
+            <p><a style="text-decoration:none" href="{% url 'EcomApp:allProdCat' %}">Home</a>
+                | <a style="text-decoration:none" href="{{product.category.get_url}}">{{ product.category }}</a>
+                | {{product.name}}
+            </p>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-md-12 col-lg-6">
+                <div align="center" style="padding-top:40px">
+                    <img src="{{product.prod_img.url}}" width="50%" alt="{{product.name}}">
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-md-12 col-lg-6">
+                <div style="padding-top:35px">
+                    <h1 class="prod_head">{{product.name}}</h1>
+                    <p>$ {{product.price}}</p>
+                    <p class="desc_title"><b>Product description</b></p>
+                    <p class="text-justify" style="font-size:14px">{{product.description}}</p>
+                    {% if product.stock <= 0 %}
+                        <p style="color:red">Out of Stock</p>
+                    {% else %}
+                        <a href="{% url 'EcomCart:add_cart' product.id %}">
+                            <button class="btn btn-primary">Add To Cart</button>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

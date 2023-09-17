@@ -1,0 +1,91 @@
+<div class="sticky-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+  <div class="container-fluid ">
+    <a></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarScroll">
+      <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll">
+
+        <li class="nav-item {% if 'EcomApp' in request.path %} active {% endif %}">
+          <a class="nav-link" aria-current="page" href="{% url 'EcomApp:allProdCat' %}">Products</a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="" id="navbarScrollingDropdown"
+             role="button" data-bs-toggle="dropdown" aria-expanded="false">Category
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+            {% for cat in links %}
+              <li><a class="dropdown-item" href="{{cat.get_url}}">{{cat.name}}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
+
+        {% if item_count > 0 %}
+        <div>
+        <li class="nav-item">
+          <a class="nav-link " href="{% url 'EcomCart:cart_details' %}">
+            <span class="badge rounded-pill  bg-primary">
+            <i class="fa fa-shopping-cart fa-lg material-icons" style="color:white;"></i>{{item_count}}
+            </span>
+          </a>
+        </li>
+        </div>
+        {% endif %}
+      </ul>
+
+      <div class="d-flex">
+
+        <form class="d-flex" style="padding-right:8px;" action="{% url 'EcomSearch:SearchResult' %}"  method="get">
+          {% csrf_token %}
+          <input class="form-control me-2" type="search" placeholder="Search" name="q" aria-label="Search">
+          <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search"></i></button>
+        </form>
+
+        <div class="dropdown" style="margin:auto;">
+          <a
+            class="dropdown-toggle d-flex align-items-center hidden-arrow"
+            href=""
+            id="navbarDropdownMenuAvatar"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+            {% if user.is_authenticated %}
+            <img
+                    src="https://i.stack.imgur.com/dr5qp.jpg"
+                    class="rounded-circle"
+                    height="25"
+                    alt="D user"
+                    loading="lazy" />
+            {% else %}
+             <img
+                     src="https://as2.ftcdn.net/v2/jpg/02/15/84/43/1000_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
+                     class="rounded-circle"
+                     height="25"
+                     alt="D user"
+                     loading="lazy" />
+            {% endif %}
+          </a>
+
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+            {% if user.is_authenticated %}
+            <li>
+              <a class="dropdown-item disabled" style="color:blue;">{{user.username}}</a></li>
+            <li>
+              <a class="dropdown-item" href="{% url 'EcomCredential:logout' %}">Logout</a></li>
+            {% else %}
+            <li>
+              <a class="dropdown-item" href="{% url 'EcomCredential:login' %}">Sign In</a></li>
+            <li>
+              <a class="dropdown-item" href="{% url 'EcomCredential:register' %}">Sign Up</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+</div>
